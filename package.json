@@ -1,6 +1,6 @@
 {
     "name": "atlas-manager",
-    "version": "0.0.1",
+    "version": "1.0.1",
     "description": "Atlas合图管理",
     "author": "Aguangtian",
     "main": "main.js",
@@ -17,7 +17,7 @@
         "main": "panel/index.js",
         "type": "dockable",
         "title": "Atlas合图管理",
-        "width": 600,
+        "width": 601,
         "height": 800
     }
 }
