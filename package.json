@@ -1,0 +1,23 @@
+{
+    "name": "atlas-manager",
+    "version": "0.0.1",
+    "description": "Atlas合图管理",
+    "author": "Aguangtian",
+    "main": "main.js",
+    "main-menu": {
+        "Packages/资源/Atlas合图管理": {
+            "message": "atlas-manager:run"
+        }
+    },
+    "dependencies": {
+        "image-size": "^0.6.2"
+    },
+    "devDependencies": {},
+    "panel": {
+        "main": "panel/index.js",
+        "type": "dockable",
+        "title": "Atlas合图管理",
+        "width": 600,
+        "height": 800
+    }
+}
