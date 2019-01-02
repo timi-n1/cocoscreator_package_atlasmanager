@@ -107,6 +107,15 @@ Editor.Panel.extend({
                     </ui-select>
                 </div>
                 <div class="line">
+                    <span class="label">TrimMode</span>
+                    <ui-select class="fill" :value="cfg[curr].trimMode" v-on:change="onChangeTrim($event)">
+                        <option value="None">None - 不剪裁</option>
+                        <option value="Trim">Trim - 剪裁, 原始尺寸</option>
+                        <option value="Crop">Crop - 剪裁, 剪裁尺寸, 位置变化</option>
+                        <option value="CropKeepPos">CropKeepPos  - 剪裁, 剪裁尺寸, 位置不变</option>
+                    </ui-select>
+                </div>
+                <div class="line">
                     <span class="label">Extrude</span>
                     <ui-num-input class="fill" precision="0" :value="cfg[curr].extrude" step="1" v-on:change="onChangeExtrude($event)"></ui-num-input>
                 </div>
@@ -207,6 +216,9 @@ Editor.Panel.extend({
                             if( list[i].allowRoration === undefined ){
                                 list[i].allowRoration = 1;
                             }
+                            if( list[i].trimMode === undefined ){
+                                list[i].trimMode = 'Trim';
+                            }
                         }
                         this.cfg = list;
                         this.onselect(0);
@@ -287,6 +299,11 @@ Editor.Panel.extend({
                     Editor.warn(this.cfg[this.curr].allowRoration);
                     this.makeImg(this.curr, true);
                 },
+                onChangeTrim(evt){
+                    this.cfg[this.curr].trimMode = evt.detail.value;
+                    Editor.warn(this.cfg[this.curr].trimMode);
+                    this.makeImg(this.curr, true);
+                },
                 getRandomOut(ext, msg=''){
                     return path.resolve(os.tmpdir(), `out_${msg}_${Date.now()}_${Math.random()}.${ext}`)
                 },
@@ -332,7 +349,7 @@ Editor.Panel.extend({
                     const premultiplyAlpha = data.outtype == 2 ? '--premultiply-alpha' : '';
                     const sizeConstraints = data.sizeConstraints;
                     const opt = isAlphaSplited && alpha ? '--opt ALPHA' : '';
-                    const trim = isAlphaSplited ? '--trim-mode None' : '';
+                    const trim = isAlphaSplited ? '--trim-mode None' : `--trim-mode ${data.trimMode}`;
                     const AutoAlias = isAlphaSplited ? '--disable-auto-alias' : '';
                     const AllowRotation = data.allowRoration ? '--enable-rotation' : '--disable-rotation';
                     const cmd = `${app} --sheet ${this.out.previewPng} --data ${this.out.previewPlist} ${opt} ${trim} ${AutoAlias} ${premultiplyAlpha} --size-constraints ${sizeConstraints} --allow-free-size --smart-update --trim --padding 2 --extrude ${data.extrude} ${AllowRotation} --max-width ${maxwidth} --max-height ${maxheight} --format cocos2d ${path.resolve(Editor.projectInfo.path, this.cfg[curr].dir)}`;
